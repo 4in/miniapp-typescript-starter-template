@@ -1,0 +1,41 @@
+{
+  "name": "miniprogram-ts-quickstart",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "clean": "del ./miniprogram/**/*.{js,wxss}",
+    "format": "prettier --write \"miniprogram/**/*.{ts,json,scss}\" && prettier --parser html --write \"miniprogram/**/*.wxml\"",
+    "compile": "gulp && tsc",
+    "dev": "concurrently \"gulp dev\" \"tsc --watch\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSE",
+  "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "miniprogram/**/*.{ts,json,scss}": [
+      "prettier --write"
+    ],
+    "miniprogram/**/*.wxml": [
+      "prettier --parser html --write"
+    ]
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^5.2.0",
+    "del-cli": "^3.0.1",
+    "gulp": "^4.0.2",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^4.1.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.4",
+    "miniprogram-api-typings": "^2.10.4",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.3"
+  }
+}
