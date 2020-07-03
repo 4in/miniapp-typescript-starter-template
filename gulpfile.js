@@ -18,7 +18,7 @@ function gulpRpx2Rem() {
       const content = file.contents.toString(enc);
       const ratio = 32; // 16 * 750 / 375
       file.contents = Buffer.from(
-        content.replace(/(\d+)rpx/gi, (_, value) => {
+        content.replace(/(\d+(\.\d+)?)rpx/gi, (_, value) => {
           return `${value / ratio}rem`;
         })
       );

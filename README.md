@@ -6,6 +6,7 @@
 - [x] Prettier
 - [x] Husky Lint
 - [x] 关闭sitemap的检测
+- [x] rpx 转 rem
 
 
 ## 使用方式
