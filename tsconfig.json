@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": "./miniprogram",
     "strictNullChecks": true,
     "noImplicitAny": true,
     "module": "CommonJS",
-    "target": "ES2015",
+    "target": "ES2017",
     "allowJs": false,
     "experimentalDecorators": true,
     "noImplicitThis": true,
@@ -12,14 +13,17 @@
     "inlineSourceMap": false,
     "inlineSources": false,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "strict": true,
     "removeComments": true,
     "pretty": true,
     "strictPropertyInitialization": true,
-    "lib": ["ESNext"],
-    "typeRoots": ["./typings"]
+    "lib": ["ESNext", "ES2020.Promise"],
+    "typeRoots": ["./typings"],
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules"]

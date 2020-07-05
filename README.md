@@ -8,6 +8,7 @@
 - [x] 关闭sitemap的检测
 - [x] rpx 转 rem
 - [x] Git Commit Message Lint
+- [x] TS Paths
 
 
 ## 使用方式

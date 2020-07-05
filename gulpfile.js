@@ -1,9 +1,15 @@
 const { src, dest, parallel, watch } = require('gulp');
 const sass = require('gulp-sass');
+const ts = require('gulp-typescript');
 const rename = require('gulp-rename');
 const PluginError = require('plugin-error');
 const through = require('through2');
+const path = require('path');
+const fs = require('fs');
 
+/**
+ * rpx2rem
+ */
 function gulpRpx2Rem() {
   return through.obj(function (file, enc, cb) {
     if (file.isNull()) {
@@ -30,24 +36,115 @@ function gulpRpx2Rem() {
   });
 }
 
-function css() {
-  return (
-    src('./miniprogram/**/*.scss')
-      .pipe(
-        sass({
-          outputStyle: 'compressed',
+/**
+ * tsconfig paths resolver
+ */
+function tsPathsResolver(tsConfig) {
+  // 将baseUrl转为绝对路径
+  const baseUrl = path.join(__dirname, tsConfig.baseUrl);
+  // 转换paths的格式: 取数组第一个值、去掉结尾的*
+  const paths = Object.entries(tsConfig.paths).map((v) => ((v[1] = v[1][0]), v).map((v) => v.replace(/\*$/g, '')));
+  return through.obj(function (file, enc, cb) {
+    if (file.isNull()) {
+      this.push(file);
+      return cb();
+    }
+    if (file.isStream()) {
+      this.emit('error', new PluginError('tsPathsResolver', 'Streaming not supported'));
+      return cb();
+    }
+    try {
+      // 将文件流转为字符串
+      const content = file.contents.toString(enc);
+      file.contents = Buffer.from(
+        // 匹配require语句
+        content.replace(/require\(('|")(.+)\1\)/g, (match, quotation, requirePath) => {
+          const matchedPath = paths.find((p) => requirePath.indexOf(p[0]) === 0);
+          if (!matchedPath) return match;
+          // 获取两个文件的相对路径
+          const relativePath = path.relative(
+            // 引入的文件
+            path.dirname(file.path),
+            // 被引入的文件
+            path.resolve(baseUrl, matchedPath[1], requirePath.replace(matchedPath[0], ''))
+          );
+          return `require(${quotation}${relativePath}${quotation})`;
         })
-      )
-      // .pipe(gulpRpx2Rem())
-      .pipe(rename({ extname: '.wxss' }))
-      .pipe(dest('./miniprogram'))
-  );
+      );
+    } catch (err) {
+      this.emit('error', new PluginError('rpx2rem', err));
+    }
+    this.push(file);
+    return cb();
+  });
 }
 
-exports.css = css;
+function compileScssToWxss(filepath) {
+  let isDefault = false;
+  if (!filepath) {
+    isDefault = true;
+    filepath = './miniprogram/**/*.scss';
+  }
+  return function scss2wxss() {
+    return (
+      src(filepath)
+        .pipe(
+          sass({
+            outputStyle: 'compressed',
+          })
+        )
+        // .pipe(gulpRpx2Rem())
+        .pipe(rename({ extname: '.wxss' }))
+        .pipe(dest(isDefault ? './miniprogram' : path.dirname(filepath)))
+    );
+  };
+}
+
+function compileTsToJs(filepath) {
+  const tsProject = ts.createProject('./tsconfig.json');
+  let isDefault = false;
+  if (!filepath) {
+    isDefault = true;
+    filepath = './miniprogram/**/*.ts';
+  }
+  return function ts2js() {
+    return src([filepath, './typings/**/*.ts'])
+      .pipe(tsProject())
+      .pipe(tsPathsResolver(tsProject.config.compilerOptions))
+      .pipe(dest(isDefault ? './miniprogram' : path.dirname(filepath)));
+  };
+}
+
+exports.css = compileScssToWxss();
+
+exports.ts = compileTsToJs();
 
 exports.dev = () => {
-  watch('./miniprogram/**/*.scss', {}, parallel(css));
+  const scssRegx = /\.scss$/;
+  const tsRegx = /\.ts$/;
+  // 首次启动dev全量编译一次, change和add只进行增量编译
+  parallel(exports.css, exports.ts)();
+  const watcher = watch('./miniprogram/**/*.{scss,ts}', {});
+  watcher.on('change', (path) => {
+    console.log(`${path} changed`);
+    if (scssRegx.test(path)) compileScssToWxss(path)();
+    if (tsRegx.test(path)) compileTsToJs(path)();
+  });
+  watcher.on('add', (path) => {
+    console.log(`${path} added`);
+    if (scssRegx.test(path)) compileScssToWxss(path)();
+    if (tsRegx.test(path)) compileTsToJs(path)();
+  });
+  watcher.on('unlink', (path) => {
+    console.log(`${path} deleted`);
+    if (scssRegx.test(path)) {
+      const wxssFilePath = path.replace(scssRegx, '.wxss');
+      fs.existsSync(wxssFilePath) && fs.unlinkSync(wxssFilePath);
+    } else if (tsRegx.test(path)) {
+      const jsFilePath = path.replace(tsRegx, '.js');
+      fs.existsSync(jsFilePath) && fs.unlinkSync(jsFilePath);
+    }
+  });
 };
 
-exports.default = parallel(css);
+exports.default = parallel(exports.css, exports.ts);

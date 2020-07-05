@@ -5,8 +5,10 @@
   "scripts": {
     "clean": "del ./miniprogram/**/*.{js,wxss}",
     "format": "prettier --write \"miniprogram/**/*.{ts,json,scss}\" && prettier --parser html --write \"miniprogram/**/*.wxml\"",
-    "compile": "gulp && tsc",
-    "dev": "concurrently \"gulp dev\" \"tsc --watch\""
+    "compile": "gulp",
+    "dev": "gulp dev",
+    "precompile": "npm run clean",
+    "predev": "npm run clean"
   },
   "keywords": [],
   "author": "",
@@ -30,11 +32,11 @@
   "devDependencies": {
     "@commitlint/cli": "^9.0.1",
     "@commitlint/config-angular": "^9.0.1",
-    "concurrently": "^5.2.0",
     "del-cli": "^3.0.1",
     "gulp": "^4.0.2",
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^4.1.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "miniprogram-api-typings": "^2.10.4",
