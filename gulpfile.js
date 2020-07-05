@@ -1,5 +1,5 @@
 const { src, dest, parallel, watch } = require('gulp');
-const sass = require('gulp-sass');
+const sass = require('gulp-dart-sass');
 const ts = require('gulp-typescript');
 const rename = require('gulp-rename');
 const PluginError = require('plugin-error');
