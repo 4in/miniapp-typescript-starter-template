@@ -110,6 +110,9 @@ function compileTsToJs(filepath) {
   return function ts2js() {
     return src([filepath, './typings/**/*.ts'])
       .pipe(tsProject())
+      .on('error', function () {
+        isDefault && process.exit(-1);
+      })
       .pipe(tsPathsResolver(tsProject.config.compilerOptions))
       .pipe(dest(isDefault ? './miniprogram' : path.dirname(filepath)));
   };
