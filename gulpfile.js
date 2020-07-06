@@ -62,12 +62,15 @@ function tsPathsResolver(tsConfig) {
           const matchedPath = paths.find((p) => requirePath.indexOf(p[0]) === 0);
           if (!matchedPath) return match;
           // 获取两个文件的相对路径
-          const relativePath = path.relative(
+          let relativePath = path.relative(
             // 引入的文件
             path.dirname(file.path),
             // 被引入的文件
             path.resolve(baseUrl, matchedPath[1], requirePath.replace(matchedPath[0], ''))
           );
+          if (relativePath.charAt(0) !== '.') {
+            relativePath = `./${relativePath}`;
+          }
           return `require(${quotation}${relativePath}${quotation})`;
         })
       );
