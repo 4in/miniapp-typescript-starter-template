@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "clean": "del ./miniprogram/**/*.{js,wxss}",
+    "clean": "del-cli ./miniprogram/**/*.{js,wxss}",
     "format": "prettier --write \"miniprogram/**/*.{ts,json,scss}\" && prettier --parser html --write \"miniprogram/**/*.wxml\"",
     "compile": "gulp",
     "dev": "gulp dev",
