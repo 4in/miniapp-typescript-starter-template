@@ -71,6 +71,9 @@ function tsPathsResolver(tsConfig) {
           if (relativePath.charAt(0) !== '.') {
             relativePath = `./${relativePath}`;
           }
+          if (process.platform === 'win32') {
+            relativePath = relativePath.replace(/\\/g, '/');
+          }
           return `require(${quotation}${relativePath}.js${quotation})`;
         })
       );
