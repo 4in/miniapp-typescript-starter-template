@@ -7,6 +7,11 @@
     "**/.DS_Store": true,
 
     // 隐藏miniprogram目录下的js和wxss文件
-    "miniprogram/**/*.{js,wxss}": true
+    "miniprogram/**/*.js": { "when": "$(basename).ts" },
+    "miniprogram/**/*.wxss": { "when": "$(basename).scss" }
+  },
+
+  "files.associations": {
+    "*.json": "jsonc"
   }
 }
