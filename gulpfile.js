@@ -78,7 +78,7 @@ function tsPathsResolver(tsConfig) {
         })
       );
     } catch (err) {
-      this.emit('error', new PluginError('rpx2rem', err));
+      this.emit('error', new PluginError('ts path resolver', err));
     }
     this.push(file);
     return cb();

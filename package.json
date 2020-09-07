@@ -1,7 +1,7 @@
 {
   "name": "miniprogram-ts-quickstart",
   "version": "0.0.1",
-  "description": "",
+  "description": "Miniapp-TypeScript-Starter-Template",
   "scripts": {
     "clean": "del-cli ./miniprogram/**/*.{js,wxss}",
     "format": "prettier --write \"miniprogram/**/*.{ts,json,scss}\" && prettier --parser html --write \"miniprogram/**/*.wxml\"",
@@ -11,7 +11,8 @@
     "predev": "npm run clean"
   },
   "keywords": [],
-  "author": "",
+  "author": "Tmk <i@tmk.im>",
+  "contributors": [],
   "license": "UNLICENSE",
   "private": true,
   "husky": {
@@ -30,17 +31,18 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@commitlint/cli": "^9.0.1",
-    "@commitlint/config-angular": "^9.0.1",
+    "@commitlint/cli": "^9.1.2",
+    "@commitlint/config-angular": "^9.1.2",
     "del-cli": "^3.0.1",
     "gulp": "^4.0.2",
     "gulp-dart-sass": "^1.0.2",
     "gulp-rename": "^2.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "husky": "^4.2.5",
-    "lint-staged": "^10.2.11",
-    "miniprogram-api-typings": "^2.10.4",
-    "prettier": "^2.0.5",
-    "typescript": "^3.9.6"
+    "lint-staged": "^10.3.0",
+    "miniprogram-api-typings": "^3.0.2",
+    "miniprogram-ci": "^1.0.76",
+    "prettier": "^2.1.1",
+    "typescript": "^4.0.2"
   }
 }

@@ -1,3 +1,4 @@
 <view>
-  Hello, world!
+  <view>Hello, world</view>
+  <button bindtap="handleSendRequest">Send Request</button>
 </view>

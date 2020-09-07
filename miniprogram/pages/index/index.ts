@@ -1,3 +1,11 @@
-const app = getApp<IAppOption>();
+import { IApp } from '@/typings';
 
-Page({});
+const app = getApp<IApp>();
+
+Page({
+  handleSendRequest() {
+    app.api.demo.test({ from: 'miniapp' }).then((data) => {
+      console.log(data);
+    });
+  },
+});
