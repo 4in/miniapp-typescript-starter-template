@@ -41,8 +41,13 @@
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": true,
-    "packNpmManually": false,
-    "packNpmRelationList": []
+    "packNpmManually": true,
+    "packNpmRelationList": [
+      {
+        "packageJsonPath": "./package.json",
+        "miniprogramNpmDistDir": "./miniprogram/"
+      }
+    ]
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},

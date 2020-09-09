@@ -62,7 +62,12 @@ function tsPathsResolver(tsConfig) {
         // 匹配require语句
         content.replace(/require\(('|")(.+)\1\)/g, (match, quotation, requirePath) => {
           const matchedPath = paths.find((p) => requirePath.indexOf(p[0]) === 0);
-          if (!matchedPath) return `require(${quotation}${requirePath}.js${quotation})`;
+          if (!matchedPath) {
+            return /^[a-zA-Z]/.test(requirePath) &&
+              fs.existsSync(path.resolve('./miniprogram/miniprogram_npm', requirePath))
+              ? `require(${quotation}${requirePath}${quotation})`
+              : `require(${quotation}${requirePath}.js${quotation})`;
+          }
           // 获取两个文件的相对路径
           let relativePath = path.relative(
             // 引入的文件

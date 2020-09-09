@@ -5,10 +5,10 @@
 - [x] SCSS
 - [x] Prettier
 - [x] Husky Lint
-- [x] 关闭 sitemap 的检测
 - [x] rpx 转 rem
 - [x] Git Commit Message Lint
 - [x] TS Paths
+- [x] npm support
 - [x] CI/CD
 - [x] 自动安装推荐插件
 
@@ -33,7 +33,7 @@ $ yarn clean
 
 ## 建议安装的拓展
 
-`node setup.js`一键安装
+`node ./scripts/setup.js`一键安装
 
 [手动安装方式](https://developers.weixin.qq.com/miniprogram/dev/devtools/editorextensions.html)
 
