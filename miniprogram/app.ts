@@ -1,6 +1,5 @@
 import api from './api/index';
 import * as utils from './utils/index';
-import mta from './libs/mta_analysis';
 import { IApp } from './typings';
 
 /**
@@ -31,18 +30,6 @@ App<IApp>({
   utils,
 
   onLaunch() {
-    // See https://mta.qq.com
-    // mta.App.init({
-    //   appID: 'XXXXXX',
-    //   eventID: 'XXXXXX',
-    //   autoReport: true,
-    //   statParam: true,
-    //   ignoreParams: [],
-    //   statPullDownFresh: true,
-    //   statShareApp: true,
-    //   statReachBottom: true,
-    // });
-
     // 登录逻辑
     // wx.login({
     //   async success({ code }) {
