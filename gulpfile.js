@@ -43,7 +43,9 @@ function tsPathsResolver(tsConfig) {
   // 将baseUrl转为绝对路径
   const baseUrl = path.join(__dirname, tsConfig.baseUrl);
   // 转换paths的格式: 取数组第一个值、去掉结尾的*
-  const paths = Object.entries(tsConfig.paths).map((v) => ((v[1] = v[1][0]), v).map((v) => v.replace(/\*$/g, '')));
+  const paths = Object.entries(tsConfig.paths).map((v) =>
+    ((v[1] = v[1][0]), v).map((v) => v.replace(/\*$/g, ''))
+  );
   return through.obj(function (file, enc, cb) {
     if (file.isNull()) {
       this.push(file);
@@ -114,7 +116,7 @@ function compileTsToJs(filepath) {
     filepath = './miniprogram/**/*.ts';
   }
   return function ts2js() {
-    return src([filepath, './typings/**/*.ts'])
+    return src([filepath, './typings/**/*.ts', './node_modules/miniprogram-api-typings/**/*.ts'])
       .pipe(tsProject())
       .on('error', function () {
         isDefault && process.exit(-1);

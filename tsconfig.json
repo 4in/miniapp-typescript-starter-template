@@ -20,7 +20,7 @@
     "pretty": true,
     "strictPropertyInitialization": true,
     "lib": ["ESNext", "ES2020.Promise"],
-    "typeRoots": ["./typings"],
+    "typeRoots": ["./typings", "./node_modules/miniprogram-api-typings"],
     "paths": {
       "@/*": ["./*"]
     }

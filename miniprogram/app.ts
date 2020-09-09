@@ -65,7 +65,7 @@ App<IApp>({
   },
 
   onError(error) {
-    console.log('onError', error);
+    console.log('App onError', error);
     utils.logger.warn('App onError', error);
   },
 

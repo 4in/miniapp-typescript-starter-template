@@ -30,6 +30,4 @@ export interface IApp {
     options: Partial<WechatMiniprogram.Page.IShareAppMessageOption> &
       Partial<WechatMiniprogram.Page.ICustomShareContent>
   ): WechatMiniprogram.Page.ICustomShareContent;
-
-  onUnhandledRejection(res: { reason: string | IAPIError; promise: Promise<any> }): void;
 }

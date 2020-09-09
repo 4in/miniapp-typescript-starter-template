@@ -4,7 +4,7 @@
   "description": "Miniapp-TypeScript-Starter-Template",
   "scripts": {
     "clean": "del-cli ./miniprogram/**/*.{js,wxss}",
-    "format": "prettier --write \"miniprogram/**/*.{ts,json,scss}\" && prettier --parser html --write \"miniprogram/**/*.wxml\"",
+    "format": "prettier --write \"miniprogram/**/*.{ts,json,scss,wxml}\"",
     "compile": "gulp",
     "dev": "gulp dev",
     "precompile": "npm run clean",
@@ -22,11 +22,8 @@
     }
   },
   "lint-staged": {
-    "miniprogram/**/*.{ts,json,scss}": [
+    "miniprogram/**/*.{ts,json,scss,wxml}": [
       "prettier --write"
-    ],
-    "miniprogram/**/*.wxml": [
-      "prettier --parser html --write"
     ]
   },
   "dependencies": {},
