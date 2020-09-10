@@ -1,6 +1,8 @@
-/**
- * 自动部署至体验版(Beta)小程序
- */
+#!/usr/bin/env node
+
+/* -------------------------------------------------------------------------- */
+/*               Continuous Integration & Continuous Deployment               */
+/* -------------------------------------------------------------------------- */
 
 const path = require('path');
 const os = require('os');
