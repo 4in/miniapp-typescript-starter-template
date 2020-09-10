@@ -20,7 +20,7 @@ const deploy = async () => {
   const project = new CI.Project({
     appid: 'APP_ID',
     type: 'miniProgram',
-    projectPath: __dirname,
+    projectPath: path.resolve(__dirname, '..'),
     privateKeyPath: tempFilePath,
     ignores: ['node_modules/**/*'],
   });
