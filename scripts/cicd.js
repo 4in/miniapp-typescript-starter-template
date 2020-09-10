@@ -8,6 +8,7 @@ const fs = require('fs');
 const child_process = require('child_process');
 const CI = require('miniprogram-ci');
 const package = require('../package.json');
+const projectConfig = require('../project.config.json');
 
 const deploy = async () => {
   const PRIVATE_KEY = process.env.PRIVATE_KEY;
@@ -18,7 +19,7 @@ const deploy = async () => {
   const tempFilePath = path.join(os.tmpdir(), 'private_key.key');
   fs.writeFileSync(tempFilePath, PRIVATE_KEY.replace(/\\n/g, '\n'));
   const project = new CI.Project({
-    appid: 'APP_ID',
+    appid: projectConfig.appid,
     type: 'miniProgram',
     projectPath: path.resolve(__dirname, '..'),
     privateKeyPath: tempFilePath,
