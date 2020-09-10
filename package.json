@@ -3,12 +3,10 @@
   "version": "0.0.1",
   "description": "Miniapp-TypeScript-Starter-Template",
   "scripts": {
-    "clean": "node ./scripts/clean.js",
     "format": "prettier --write \"miniprogram/**/*.{ts,json,scss,wxml}\"",
-    "compile": "gulp",
+    "clean": "gulp clean",
     "dev": "gulp dev",
-    "precompile": "npm run clean",
-    "predev": "npm run clean"
+    "compile": "gulp"
   },
   "keywords": [],
   "author": "Tmk <i@tmk.im>",

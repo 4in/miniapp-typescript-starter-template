@@ -1,17 +1,29 @@
-const { src, dest, parallel, watch } = require('gulp');
+const { src, dest, parallel, watch, series } = require('gulp');
 const sass = require('gulp-dart-sass');
 const ts = require('gulp-typescript');
 const rename = require('gulp-rename');
 const PluginError = require('plugin-error');
-const through = require('through2');
+const through2 = require('through2');
 const path = require('path');
 const fs = require('fs');
+
+/**
+ * clean
+ */
+function clean() {
+  return src(['miniprogram/**/*.{js,wxss}', '!miniprogram/miniprogram_npm/**/*']).pipe(
+    through2.obj((file, _, cb) => {
+      fs.unlink(file.path, () => {});
+      cb(null, file);
+    })
+  );
+}
 
 /**
  * rpx2rem
  */
 function gulpRpx2Rem() {
-  return through.obj(function (file, enc, cb) {
+  return through2.obj(function (file, enc, cb) {
     if (file.isNull()) {
       this.push(file);
       return cb();
@@ -46,7 +58,7 @@ function tsPathsResolver(tsConfig) {
   const paths = Object.entries(tsConfig.paths).map((v) =>
     ((v[1] = v[1][0]), v).map((v) => v.replace(/\*$/g, ''))
   );
-  return through.obj(function (file, enc, cb) {
+  return through2.obj(function (file, enc, cb) {
     if (file.isNull()) {
       this.push(file);
       return cb();
@@ -121,7 +133,7 @@ function compileTsToJs(filepath) {
     filepath = './miniprogram/**/*.ts';
   }
   return function ts2js() {
-    return src([filepath, './typings/**/*.ts', './node_modules/miniprogram-api-typings/**/*.ts'])
+    return src([filepath, './typings/**/*.ts', './node_modules/miniprogram-api-typings'])
       .pipe(tsProject())
       .on('error', function () {
         isDefault && process.exit(-1);
@@ -131,15 +143,19 @@ function compileTsToJs(filepath) {
   };
 }
 
+exports.clean = clean;
+
 exports.css = compileScssToWxss();
 
 exports.ts = compileTsToJs();
+
+exports.default = series(exports.clean, parallel(exports.css, exports.ts));
 
 exports.dev = () => {
   const scssRegx = /\.scss$/;
   const tsRegx = /\.ts$/;
   // 首次启动dev全量编译一次, change和add只进行增量编译
-  parallel(exports.css, exports.ts)();
+  exports.default();
   const watcher = watch('./miniprogram/**/*.{scss,ts}', {});
   watcher.on('change', (path) => {
     console.log(`${path} changed`);
@@ -162,5 +178,3 @@ exports.dev = () => {
     }
   });
 };
-
-exports.default = parallel(exports.css, exports.ts);
