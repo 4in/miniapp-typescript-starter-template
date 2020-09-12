@@ -7,7 +7,7 @@ import { API_BASE_URL } from '@/config';
 
 const logger = wx.getLogManager({ level: 0 });
 
-type RequestMethod = 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';
+type RequestMethod = Property<WechatMiniprogram.RequestOption, 'method'>;
 
 interface ApiSuccessResponse<T> {
   code: number;
@@ -46,9 +46,9 @@ export class Base {
         },
         complete(res) {
           // 如果不分开写，在真机上可能会导致后面的log看不见
-          console.log('Request', url, data);
+          console.log(`Request ${method}`, url, data);
           console.log(res);
-          logger.info('Request', url, data);
+          logger.info(`Request ${method}`, url, data);
           logger.info(res);
         },
       });
