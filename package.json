@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Miniapp-TypeScript-Starter-Template",
   "scripts": {
-    "format": "prettier --write \"miniprogram/**/*.{ts,json,scss,wxml}\"",
+    "format": "prettier --write \"**/*.{ts,json,scss,wxml}\"",
     "clean": "gulp clean",
     "dev": "gulp dev",
     "compile": "gulp"
@@ -20,7 +20,7 @@
     }
   },
   "lint-staged": {
-    "miniprogram/**/*.{ts,json,scss,wxml}": [
+    "**/*.{ts,json,scss,wxml}": [
       "prettier --write"
     ]
   },
