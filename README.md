@@ -16,7 +16,7 @@
 
 ```bash
 # 安装依赖
-$ yarn  # npm i
+$ yarn --ignore-optional # npm i --no-optional
 
 # 开发   如果在编译前预处理写，会把整个项目进行编译，其实是没有必要的。
 $ yarn dev
