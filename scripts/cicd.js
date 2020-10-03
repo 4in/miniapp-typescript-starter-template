@@ -20,13 +20,7 @@ const deploy = async () => {
   }
   const tempFilePath = path.join(os.tmpdir(), 'private_key.key');
   fs.writeFileSync(tempFilePath, PRIVATE_KEY.replace(/\\n/g, '\n'));
-  const project = new CI.Project({
-    appid: projectConfig.appid,
-    type: 'miniProgram',
-    projectPath: path.resolve(__dirname, '..'),
-    privateKeyPath: tempFilePath,
-    ignores: ['node_modules/**/*'],
-  });
+
   try {
     const packResult = await CI.packNpmManually({
       packageJsonPath: path.resolve(__dirname, '../package.json'),
@@ -39,7 +33,13 @@ const deploy = async () => {
       desc = child_process.execSync('git show -s --format="%s (%aN)"').toString('utf-8');
     } catch (e) {}
     const uploadResult = await CI.upload({
-      project,
+      project: new CI.Project({
+        appid: projectConfig.appid,
+        type: 'miniProgram',
+        projectPath: path.resolve(__dirname, '..'),
+        privateKeyPath: tempFilePath,
+        ignores: ['node_modules/**/*'],
+      }),
       version: package.version,
       desc,
       robot: 1,

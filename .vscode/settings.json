@@ -13,5 +13,6 @@
 
   "files.associations": {
     "*.json": "jsonc"
-  }
+  },
+  "cSpell.words": ["appid", "miniapp", "preload", "regx", "wxml", "wxss"]
 }
