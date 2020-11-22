@@ -8,11 +8,21 @@
 
     // 隐藏miniprogram目录下的js和wxss文件
     "miniprogram/**/*.js": { "when": "$(basename).ts" },
+    "miniprogram/**/*.js.map": { "when": "$(basename)" },
     "miniprogram/**/*.wxss": { "when": "$(basename).scss" }
   },
 
+  "json.schemas": [
+    {
+      "fileMatch": ["/miniprogram/pages/**/index.json"],
+      "url": "/.vscode/miniapp-schema.json"
+    }
+  ],
+
+  // 文件关联
   "files.associations": {
-    "*.json": "jsonc"
-  },
-  "cSpell.words": ["appid", "miniapp", "preload", "regx", "wxml", "wxss"]
+    "*.json": "jsonc",
+    "*.wxml": "wxml",
+    "*.wxs": "javascript"
+  }
 }

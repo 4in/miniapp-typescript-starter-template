@@ -1,6 +1,7 @@
 const { src, dest, parallel, watch, series } = require('gulp');
 const sass = require('gulp-dart-sass');
 const ts = require('gulp-typescript');
+const sourcemaps = require('gulp-sourcemaps');
 const rename = require('gulp-rename');
 const PluginError = require('plugin-error');
 const through2 = require('through2');
@@ -11,7 +12,7 @@ const fs = require('fs');
  * clean
  */
 function clean() {
-  return src(['miniprogram/**/*.{js,wxss}', '!miniprogram/miniprogram_npm/**/*']).pipe(
+  return src(['miniprogram/**/*.{js,js.map,wxss}', '!miniprogram/miniprogram_npm/**/*']).pipe(
     through2.obj((file, _, cb) => {
       fs.unlink(file.path, () => {});
       cb(null, file);
@@ -67,6 +68,21 @@ function tsPathsResolver(tsConfig) {
       this.emit('error', new PluginError('tsPathsResolver', 'Streaming not supported'));
       return cb();
     }
+    /**
+     * 自动补全require path
+     * @param {string} requireFile
+     */
+    const autoCompletePath = (requireFile) => {
+      const baseDir = path.dirname(file.path);
+      // 此处用.ts判断，因为此时可能.js文件还没生成
+      if (!fs.existsSync(path.resolve(baseDir, `${requireFile}.ts`))) {
+        // 引用的文件不存在，且同名目录下含有index.ts文件，则加上index
+        if (fs.existsSync(path.resolve(baseDir, `${requireFile}/index.ts`))) {
+          requireFile += '/index';
+        }
+      }
+      return `${requireFile}${requireFile.endsWith('.js') ? '' : '.js'}`;
+    };
     try {
       // 将文件流转为字符串
       const content = file.contents.toString(enc);
@@ -75,10 +91,10 @@ function tsPathsResolver(tsConfig) {
         content.replace(/require\(('|")(.+)\1\)/g, (match, quotation, requirePath) => {
           const matchedPath = paths.find((p) => requirePath.indexOf(p[0]) === 0);
           if (!matchedPath) {
-            return /^[a-zA-Z]/.test(requirePath) &&
+            return /^[@a-zA-Z]/.test(requirePath) &&
               fs.existsSync(path.resolve('./miniprogram/miniprogram_npm', requirePath))
               ? `require(${quotation}${requirePath}${quotation})`
-              : `require(${quotation}${requirePath}.js${quotation})`;
+              : `require(${quotation}${autoCompletePath(requirePath)}${quotation})`;
           }
           // 获取两个文件的相对路径
           let relativePath = path.relative(
@@ -93,7 +109,7 @@ function tsPathsResolver(tsConfig) {
           if (process.platform === 'win32') {
             relativePath = relativePath.replace(/\\/g, '/');
           }
-          return `require(${quotation}${relativePath}.js${quotation})`;
+          return `require(${quotation}${autoCompletePath(relativePath)}${quotation})`;
         })
       );
     } catch (err) {
@@ -111,17 +127,15 @@ function compileScssToWxss(filepath) {
     filepath = './miniprogram/**/*.scss';
   }
   return function scss2wxss() {
-    return (
-      src(filepath)
-        .pipe(
-          sass({
-            outputStyle: 'compressed',
-          })
-        )
-        // .pipe(gulpRpx2Rem())
-        .pipe(rename({ extname: '.wxss' }))
-        .pipe(dest(isDefault ? './miniprogram' : path.dirname(filepath)))
-    );
+    return src(filepath)
+      .pipe(
+        sass({
+          outputStyle: 'compressed',
+        })
+      )
+      .pipe(gulpRpx2Rem())
+      .pipe(rename({ extname: '.wxss' }))
+      .pipe(dest(isDefault ? './miniprogram' : path.dirname(filepath)));
   };
 }
 
@@ -133,13 +147,17 @@ function compileTsToJs(filepath) {
     filepath = './miniprogram/**/*.ts';
   }
   return function ts2js() {
-    return src([filepath, './typings/**/*.ts', './node_modules/miniprogram-api-typings'])
+    return src([filepath, './typings/**/*.ts', './node_modules/miniprogram-api-typings'], {
+      base: './miniprogram',
+    })
+      .pipe(sourcemaps.init())
       .pipe(tsProject())
+      .js.pipe(sourcemaps.write('./'))
       .on('error', function () {
         isDefault && process.exit(-1);
       })
       .pipe(tsPathsResolver(tsProject.config.compilerOptions))
-      .pipe(dest(isDefault ? './miniprogram' : path.dirname(filepath)));
+      .pipe(dest('./miniprogram'));
   };
 }
 

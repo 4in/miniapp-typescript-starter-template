@@ -16,7 +16,7 @@
 
 ```bash
 # 安装依赖
-$ yarn --ignore-optional # npm i --no-optional
+$ yarn # npm i
 
 # 开发   如果在编译前预处理写，会把整个项目进行编译，其实是没有必要的。
 $ yarn dev
@@ -42,6 +42,7 @@ $ yarn clean
 - `mrmlnc.vscode-scss` SCSS 智能提示
 - `wayou.vscode-todo-highlight` 高亮 TODO、FIXME 等注释中的关键字
 - `jock.svg` SVG 相关，预览、压缩、导出等
+- `streetsidesoftware.code-spell-checker` 拼写检查
 
 ## Troubleshooting
 
@@ -60,7 +61,7 @@ ln -s $(which node) /usr/local/bin/node
 
 ### PowerShell 提示“yarn : 无法加载文件”
 
-以管理员权限运行 PowerShell，输入 `set-ExecutionPolicy RemoteSigned` 并选择 `Y`
+以管理员权限运行 PowerShell，输入 `Set-ExecutionPolicy RemoteSigned` 并选择 `Y`
 
 ### 开发者工具正常运行，真机预览页面空白
 

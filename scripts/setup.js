@@ -285,6 +285,7 @@ setup([
   'mrmlnc.vscode-scss',
   'wayou.vscode-todo-highlight',
   'jock.svg',
+  'streetsidesoftware.code-spell-checker',
 ]).then(() => {
   console.log(chalk.greenBgWhite(' Setup Finished 🎉 '));
 });

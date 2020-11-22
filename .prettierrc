@@ -9,6 +9,12 @@
       "options": {
         "parser": "html"
       }
+    },
+    {
+      "files": "*.wxs",
+      "options": {
+        "parser": "babel"
+      }
     }
   ]
 }
