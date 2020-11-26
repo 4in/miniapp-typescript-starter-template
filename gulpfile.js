@@ -8,6 +8,8 @@ const through2 = require('through2');
 const path = require('path');
 const fs = require('fs');
 
+const IS_WINDOWS = process.platform === 'win32';
+
 /**
  * clean
  */
@@ -135,7 +137,7 @@ function compileScssToWxss(filepath) {
       )
       .pipe(gulpRpx2Rem())
       .pipe(rename({ extname: '.wxss' }))
-      .pipe(dest(isDefault ? './miniprogram' : path.dirname(filepath)));
+      .pipe(dest(isDefault ? './miniprogram' : IS_WINDOWS ? '.' : path.dirname(filepath)));
   };
 }
 
