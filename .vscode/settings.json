@@ -24,5 +24,7 @@
     "*.json": "jsonc",
     "*.wxml": "wxml",
     "*.wxs": "javascript"
-  }
+  },
+
+  "cSpell.words": ["bindtap", "miniapp", "preload", "projectname", "regx", "wxml", "wxss"]
 }

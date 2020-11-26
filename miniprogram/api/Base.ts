@@ -33,7 +33,6 @@ export class Base {
           // @ts-ignore
           resolve(ret);
 
-          // 一般来说，逻辑应该是下面这样
           // if (ret.code === 200) {
           //   resolve(ret.data);
           // } else {
