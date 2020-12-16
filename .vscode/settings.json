@@ -26,5 +26,5 @@
     "*.wxs": "javascript"
   },
 
-  "cSpell.words": ["bindtap", "miniapp", "preload", "projectname", "regx", "wxml", "wxss"]
+  "cSpell.words": ["bindtap", "miniapp", "preload", "projectname", "regx", "weapp", "wxml", "wxss"]
 }
