@@ -14,19 +14,19 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@commitlint/cli": "^12.0.0",
-    "@commitlint/config-angular": "^12.0.0",
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-angular": "^12.0.1",
     "gulp": "^4.0.2",
     "gulp-dart-sass": "^1.0.2",
     "gulp-rename": "^2.0.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
-    "husky": "^5.1.1",
+    "husky": "^5.2.0",
     "lint-staged": "^10.5.4",
-    "miniprogram-api-typings": "^3.2.3",
-    "miniprogram-ci": "^1.0.98",
+    "miniprogram-api-typings": "^3.3.0",
+    "miniprogram-ci": "^1.1.6",
     "prettier": "^2.2.1",
-    "typescript": "^4.1.5"
+    "typescript": "^4.2.3"
   },
   "lint-staged": {
     "**/*.{ts,js,json,scss,wxml,wxs}": [
