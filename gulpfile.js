@@ -108,7 +108,7 @@ function tsPathsResolver(tsConfig) {
           if (relativePath.charAt(0) !== '.') {
             relativePath = `./${relativePath}`;
           }
-          if (process.platform === 'win32') {
+          if (IS_WINDOWS) {
             relativePath = relativePath.replace(/\\/g, '/');
           }
           return `require(${quotation}${autoCompletePath(relativePath)}${quotation})`;
@@ -174,19 +174,24 @@ exports.default = series(exports.clean, parallel(exports.css, exports.ts));
 exports.dev = () => {
   const scssRegx = /\.scss$/;
   const tsRegx = /\.ts$/;
+
   // 首次启动dev全量编译一次, change和add只进行增量编译
   exports.default();
+
   const watcher = watch('./miniprogram/**/*.{scss,ts}', {});
+
   watcher.on('change', (path) => {
     console.log(`${path} changed`);
     if (scssRegx.test(path)) compileScssToWxss(path)();
     if (tsRegx.test(path)) compileTsToJs(path)();
   });
+
   watcher.on('add', (path) => {
     console.log(`${path} added`);
     if (scssRegx.test(path)) compileScssToWxss(path)();
     if (tsRegx.test(path)) compileTsToJs(path)();
   });
+
   watcher.on('unlink', (path) => {
     console.log(`${path} deleted`);
     if (scssRegx.test(path)) {
