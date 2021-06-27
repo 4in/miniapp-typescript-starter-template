@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "postinstall": "husky install",
-    "format": "prettier --write \"**/*.{ts,js,json,scss,wxml,wxs}\"",
+    "format": "prettier --check --write \"**/*.{ts,js,json,scss,wxml,wxs}\"",
     "clean": "gulp clean",
     "dev": "gulp dev",
     "compile": "gulp"
